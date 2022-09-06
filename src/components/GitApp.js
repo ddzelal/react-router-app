@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useContext  } from "react";
 import axios from "axios";
 import "./GitApp.css";
 import TextField from "@mui/material/TextField";
@@ -12,6 +12,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import { ThemeContext } from "./useContex/ThemeContext";
 
 const Div = styled("div")(({ theme }) => ({
   ...theme.typography.button,
@@ -19,7 +20,12 @@ const Div = styled("div")(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
+
+
 export default function GitApp() {
+
+  const { theme } = useContext(ThemeContext);
+
   const [gitUser, setGitUser] = useState({
     login: "",
     bio: "",
@@ -45,6 +51,8 @@ export default function GitApp() {
       setGitUser(data);
     });
     resetState();
+    console.log(ref.current);
+    ref.current.value = "";
   };
 
   useEffect(() => {
@@ -59,15 +67,19 @@ export default function GitApp() {
     setUserRepos(response.data);
   };
 
+  const ref = useRef(null);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid
+
         className="background-git"
         wrap="wrap"
         container
         spacing={2}
         columns={0}
         padding={5}
+        backgroundColor={theme}
       >
         <Grid item xs={8}>
           <Box
@@ -79,6 +91,7 @@ export default function GitApp() {
             autoComplete="off"
           >
             <TextField
+              inputRef={ref}
               onChange={(e) => inputValue(e.target.value)}
               id="outlined-basic"
               label="GitUsers"
@@ -90,7 +103,11 @@ export default function GitApp() {
               Search
             </Button>
             {userRepos.map((el) => {
-              return <Div key={el.id}>'Repository:'{el.full_name}</Div>;
+              return (
+                <Div key={el.id}>
+                  {el.full_name}
+                </Div>
+              );
             })}
           </Stack>
         </Grid>

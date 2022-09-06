@@ -1,12 +1,20 @@
 import React from 'react'
+import { BrowserRouter, Route , Switch } from 'react-router-dom'
+import AboutUs from './AboutUs'
+import NewestHeader from './NewestHeader'
+import TeamBuild from './TeamBuild'
 
 export default function News() {
 
 
 
   return (
-    <div>
-        <h1>Sve ovo je radi testiranja! da se zna da ne bude posle ovo ono</h1>
-    </div>
+    <BrowserRouter>
+    <NewestHeader/ >
+    <Switch>
+      <Route path="/"  exact component={AboutUs} />
+      <Route path="/TeamBuild" component={TeamBuild} />
+    </Switch>
+   </BrowserRouter>  
   )
 }
